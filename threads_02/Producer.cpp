@@ -20,15 +20,9 @@ void Producer::produce() {
 			std::this_thread::yield();
 		}
 
-		{
-			std::scoped_lock lock(mutex);
-			ptrArray = createPtrArray();
-			ptrQueue->push(std::move(ptrArray));
-		}
+		ptrArray = createPtrArray();
+		ptrQueue->push(std::move(ptrArray));
+		
 	}
-	ptrQueue->setFinished();
-}
-
-Producer::~Producer() {
-	std::cout << "Producer destructor" << std::endl;
+	ptrQueue->setFinished();	
 }

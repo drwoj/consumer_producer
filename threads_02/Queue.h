@@ -15,8 +15,8 @@ class Queue
 private:
 	std::queue<std::unique_ptr<std::array<int, ARRSIZE>>> queue;
 	int maxSize = 0;
-	std::atomic<int> length = 0;
-	std::atomic<bool> isFinished = false;
+	int length = 0;
+	bool isFinished = false;
 	
 public:
 	Queue(int maxSize);

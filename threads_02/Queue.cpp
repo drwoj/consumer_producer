@@ -8,6 +8,7 @@ Queue::Queue(int maxSize) {
 }
 
 void Queue::push(std::unique_ptr<std::array<int, ARRSIZE>> array) {
+	std::scoped_lock lock(mutex);
 	if (isFull()) {
 		return;
 	}
@@ -16,6 +17,7 @@ void Queue::push(std::unique_ptr<std::array<int, ARRSIZE>> array) {
 }	
 
 std::unique_ptr<std::array<int, ARRSIZE>> Queue::pop() {
+	std::scoped_lock lock(mutex);
 	if (isEmpty()) {
 		return nullptr;
 	}

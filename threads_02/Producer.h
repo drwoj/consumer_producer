@@ -13,5 +13,4 @@ private:
 public:
 	Producer(std::shared_ptr<Queue> ptrQueue, int numberOfArrays);
 	void produce();
-	~Producer();
 };

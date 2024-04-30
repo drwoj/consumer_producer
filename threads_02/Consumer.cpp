@@ -9,37 +9,23 @@ void Consumer::consume() {
 	std::unique_ptr<std::array<int, ARRSIZE>> array;
 	while ( (!ptrQueue->getFinished()) || (!ptrQueue->isEmpty()) ) {
 
-		while (ptrQueue->isEmpty()) {
+		while (!ptrQueue->getFinished() && ptrQueue->isEmpty()) {
 			std::this_thread::yield();
 		}
 
-		
-		{
-			std::scoped_lock lock(mutex);
-			array = ptrQueue->pop();
+		array = ptrQueue->pop();
 
-			if (array == nullptr) {
-				std::cout << "array is nullptr" << std::endl;
-				continue;
-			}
+		if (array == nullptr) {
+			continue;
 		}
 
 		std::sort(array->begin(), array->end());
 		numSortedArrays++;
 		checksum = std::accumulate(array->begin(), array->end(), 0);
-
-		{
-			std::scoped_lock lock(coutMutex);
-			std::cout <<"checksum: " << checksum << std::endl;
-		}
 	}
-	
+
 	{
 		std::scoped_lock lock(coutMutex);
 		std::cout << "number of sorted arrays: " << numSortedArrays << std::endl;
 	}
-}
-
-Consumer::~Consumer() {
-	std::cout << "Consumer destructor" << std::endl;
 }
